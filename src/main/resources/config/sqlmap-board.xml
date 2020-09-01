@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.practice.dao.BoardDAO">
+
+	<!--폴더 리스트 불러오기  -->
+	 <select id="selectFolderAll" resultType="com.practice.dao.FolderVO">
+		select * from folder 
+	</select> 
+	
+	
+	<!--기본 폴더값 가져오기  -->
+	<select id="defaultFolder" resultType="string">
+		select folderid from folder where rownum=1
+	</select>
+	
+	<!--board 리스트불러오기  -->
+	<select id="selectAll" resultType="com.practice.dao.BoardVO" parameterType="hashmap">		
+			select * from board  where folderid =#{folder} order by bnum desc
+	</select>
+	
+	  <select id="selectOne" resultType="com.practice.dao.BoardVO" parameterType="hashmap">
+		select * from board where bnum = #{bnum} and folderid = #{folderid}
+	</select>
+	
+	<insert id="insert" parameterType="hashmap">
+		insert into board (title, writer, context,folderid) values (#{vo.title}, #{vo.writer}, #{vo.context}, #{folderid})
+	</insert>
+	
+	<update id ="viewUp" parameterType="hashmap">
+		update board set views = views+1 where folderid =#{folderid} and bnum =#{bnum}
+	</update>
+</mapper>
